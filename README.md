@@ -9,63 +9,64 @@
 So far we have seen how to construct different types of objects in JavaScript with the class syntax.  
 
 ```js
-  class Hotel {
-    constructor(address){
-      this.address = address
+  class User {
+    constructor(name){
+      this.name = name
     }
   }
 
-  new Hotel('350 5th Ave New York NY')
+  new User('bob')
 ```
 
-Now let's say we want to also construct a class to represent rooms for our house.  
+Now let's say all of our users have many items they purchased.  We can represent the items in the following way.
 
 ```js
-  class Room {
-    constructor(squareFeet, roomNumber){
-      this.squareFeet = squareFeet
-      this.roomNumber = roomNumber
+  class Item {
+    constructor(name, price){
+      this.name = name
+      this.price = price
     }
   }
 
-  new Room(400)
+  new Item(400)
 ```
 
-If we have a hotel chain, with multiple hotel properties and number of rooms in each property, we would want a way to associate rooms with a particular hotel.  To do so, we would first determine how a room is associated with a hotel.  There are two types of relationships for us to choose from:
+If we have a user, with multiple items we would want a way to associate items with a particular user.  To do so, first determine how an item is associated with a user.  There are two types of relationships for us to choose from:
 
-1. Many to Many - that is, a room has many hotels, and a hotel has many rooms
-2. HasMany and BelongsTo - that is, a hotel has many rooms and a room belongs to a hotel.
+1. Many to Many - that is, a item has many users, and a user has many items
+2. HasMany and BelongsTo - that is, a user has many items and a item belongs to a user.
 
-Because a room can only be associated with one hotel, we say that a room belongsTo a hotel and a hotel has many rooms.  This is very similar to our concept of associating data with sql.  If you are unfamiliar with that, you can check it out [here](https://github.com/learn-co-curriculum/sql-table-relations-readme)].
+Because a item can only be associated with one user (we are assuming that each item can only be owned by one user), we say that a item belongsTo a user and a user has many items.  This is very similar to our concept of associating data with sql.  If you are unfamiliar with how to associate data in sql, you can check it out [here](https://github.com/learn-co-curriculum/sql-table-relations-readme).
 
 So could imagine representing the information in the following way:
 
 ```js
-  [{roomNumber: 344, hotelName: 'The Sleeper on 5th'},
-  {roomNumber: 346, hotelName: 'The Sleeper on 5th'},
-  {roomNumber: 444, hotelName: 'The Moonlight on 8th'},
-  {roomNumber: 242, hotelName: 'The Moonlight on 8th'},
+  [{itemName: 'red socks', userName: 'Cindy'},
+  {itemName: 'blue shirt', userName: 'Cindy'},
+  {itemName: 'blue trousers', userName: 'Bob'},
+  {itemName: 'black tshirt', userName: 'Bob'},
+
 ]
 ```
 
-However, there is the potential that two hotels may have the same name, or that hotels would share room number, we should probably associate them by giving each hotel an id, and each room an id.   
+However, there is the potential that two users may have the same name, so name is probably not the best way to identify a particular user.  Instead, we should probably associate them by giving each user an id, and each item an id.   
 
 ```js
-  let store = {rooms: [
-    {id: 1, roomNumber: 242, squareFeet: 400, hotelId: 1},
-    {id: 2, roomNumber: 244, squareFeet: 300, hotelId: 1},
-    {id: 3, roomNumber: 244, squareFeet: 300, hotelId: 2}
+  let store = {items: [
+    {id: 1, price: 2, name: 'red socks', userId: 1},
+    {id: 2, price: 7, name: 'blue shirt', userId: 1},
+    {id: 3, price: 4, name: 'black tshirt', userId: 2}
     ],
-  hotels: [
-    {id: 1, name: 'The Sleeper on 5th'},
-    {id: 2, name: 'The Moonlight on 8th'},
-    {id: 3, name: 'The PillowHead in Brooklyn'}
+  users: [
+    {id: 1, name: 'Cindy'},
+    {id: 2, name: 'Billy'},
+    {id: 3, name: 'Bobby'}
   ]}
 ```
 
-Let's try to see what's going on in the data structure above.  We assign a variable called store to a JavaScript object.  The store object will represent all of the objects that are initialized.  The store object has two keys each of which points to an array: one to represent the collection of rooms and one to represent the collection of hotels.  
+Let's try to see what's going on in the data structure above.  We assign a variable called `store` to a JavaScript object.  The `store` object will represent all of the objects that are initialized, and we will use it to store these objects.  The `store` object has two keys each of which points to an array: one to represent the collection of items and one to represent the collection of users.  
 
-Let's see if we can answer some questions with our data structured like this.  For example, if we want to see the name of the hotel that is associated with our first room, just take a look at the hotelId which is 1, and then go find the hotel with id 1, and see that the name is The Sleeper on 5th.  We can also go find all of the rooms associated with the Sleeper on 5th.  To do so, we see that its id is 1, and then find all of the rooms with a hotelId of 1: the first and second rooms.  
+Let's see if we can answer some questions with our data structured like this.  For example, if we want to see the name of the user that is associated with our first item, just take a look at the `userId` which is 1, and then go find the user with id 1, and see that the name is Cindy.  We can also go find all of the items associated with Cindy.  To do so, we see that its id is 1, and then find all of the items with a `userId` of 1: the first and second items.  
 
 So this is the structure we are aiming for.  How do we hook this up to our classes?
 
@@ -73,100 +74,102 @@ So this is the structure we are aiming for.  How do we hook this up to our class
 
 1. Assign an id each time we make a new instance
 
-We need to assign each room object an id, and that id should increment each time we make a new room.  I bet if you close your eyes and rub your forehead with your index finger, you can think of the solution yourself.
+We need to assign each item object an id, and that id should increment each time we make a new item.  I bet if you close your eyes and rub your forehead with your index finger, you can think of the solution yourself.
 
 
 ```javascript
-  let roomId = 0
-  class Room {
-    constructor(roomNumber, squareFeet){
-      this.id = ++roomId
-      // increment roomId, then assign the roomId as the instance's id
-      this.squareFeet = squareFeet
-      this.roomNumber = roomNumber
+  let itemId = 0
+  class Item {
+    constructor(price, name){
+      this.id = ++itemId
+      // increment itemId, then assign the itemId as the instance's id
+      this.name = name
+      this.price = price
     }
   }
 
-  let room = new Room(250, 242)
-  // {id: 1, squareFeet: 250, roomNumber: 242}
-  let secondRoom = new Room(200, 240)
-  // {id: 2, squareFeet: 200, roomNumber: 240}
+  let item = new Item('trousers', 24)
+  // {id: 1, name: 'trousers', price: 24}
+  let secondItem = new Item('tshirt', 8)
+  // {id: 2, name: 'tshirt', price: 8}
 ```
 
-2. Our second task is to insert these new objects to the store
+Notice that we use `++itemId` to increment the `itemId` and then assign it to the new item's id.
+
+2. Our second task is to insert these new objects to the `store`
 
 ```javascript
-let store = {rooms: []}
-// initialize store with key of rooms that points to an empty array
+let store = {items: []}
+// initialize store with key of items that points to an empty array
 
-let roomId = 0
+let itemId = 0
 
-class Room {
-  constructor(roomNumber, squareFeet){
-    this.id = ++roomId
-    this.squareFeet = squareFeet
-    this.roomNumber = roomNumber
+class Item {
+  constructor(price, name){
+    this.id = ++itemId
+    this.name = name
+    this.price = price
 
-    // insert in the room to the store
-    store.rooms.push(this)
+    // insert in the item to the store
+    store.items.push(this)
   }
 }
 
-let room = new Room(250, 242)
-let secondRoom = new Room(200, 240)
+let item = new Item('trousers', 24)
+let secondItem = new Item('tshirt', 8)
 
-store.rooms[0]
-// {id: 1, squareFeet: 250, roomNumber: 240}
+store.items[0]
+// {id: 1, name: 'trousers', price: 24}
 ```
-Ok, let's do the same thing with hotels.
+Ok, let's do the same thing with users.
 
 ```javascript
-let store = {rooms: [], hotels: []}
-// initialize store with key of rooms and hotels that each point to an empty array
+let store = {items: [], users: []}
+// initialize store with key of items and users that each point to an empty array
 
-let hotelId = 0
+let userId = 0
 
-class Hotel {
+class User {
   constructor(name){
-    this.id = ++hotelId
+    this.id = ++userId
     this.name = name
 
-    // insert in the hotel to the store
-    store.hotels.push(this)
+    // insert in the user to the store
+    store.users.push(this)
   }
 }
 ```
 
-Finally, let's allow the ability to associate a hotel with a room.
+Finally, let's allow the ability to associate a user with a item.
 
 ```js
-let roomId = 0
+let itemId = 0
 
-class Room {
-  constructor(roomNumber, squareFeet, hotel){
-    this.id = ++roomId
-    this.squareFeet = squareFeet
-    this.roomNumber = roomNumber
-    if(hotel){
-      this.hotelId = hotel.id
+class Item {
+  constructor(price, name, user){
+    this.id = ++itemId
+    this.name = name
+    this.price = price
+    if(user){
+      this.userId = user.id
     }
 
-    // insert in the room to the store
-    store.rooms.push(this)
+    // insert in the item to the store
+    store.items.push(this)
   }
-  setHotel(hotel){
-    this.hotelId = hotel.id
+  setUser(user){
+    this.userId = user.id
   }
 }
 
-let forest = new Hotel("The Forest Hotel")
-let forestRoom = new Room(213, 240, forest)
+let bobby = new User("The Forest User")
+let trousers = new Item('trousers', 24, bobby)
 
 store
-// {hotels: [{id: 1, name: "The Forest Hotel"}], rooms: [{id: 1, number: 213, squareFeet: 240, hotelId: 1}]}
+// {users: [{id: 1, name: 'Bobby'}], items: [{id: 1, name: 'trousers', price: 24, userId: 1}]}
 ```
 
-So from the code above, you can see that we can associate a room with a hotel either by passing through a room to a hotel upon initialization or by by calling a the `setHotel` setter method that we wrote.  
+So from the code above, you can see that we can associate a item with a user either by passing through a item to a user upon initialization or by by calling a the `setUser` setter method that we wrote.  
 
 ## Summary
 
@@ -176,4 +179,4 @@ In this lesson, we saw how we can use a plain javascript object to store and ass
 
 + [Sql Relations](https://github.com/learn-co-curriculum/sql-table-relations-readme)
 
-<p data-visibility='hidden'>View <a href='https://learn.co/lessons/js-classes-readme'>Classes in JS</a> on Learn.co and start learning to code for free.</p>
+<p data-visibility='hidden'>View <a href='https://learn.co/lessons/js-object-oriented-object-relations-readme'>Object Relations JS</a> on Learn.co and start learning to code for free.</p>
