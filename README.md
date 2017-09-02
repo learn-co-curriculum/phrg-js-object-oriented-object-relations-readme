@@ -1,4 +1,4 @@
-# Associating Objects in Javascript
+# Association Methods in Javascript
 
 ## Objectives
 + Understand how to use associate objects with a store.
