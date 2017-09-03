@@ -162,7 +162,7 @@ class Item {
   }
 }
 
-let bobby = new User("The Forest User")
+let bobby = new User("bobby")
 let trousers = new Item('trousers', 24, bobby)
 
 store
