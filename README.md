@@ -94,7 +94,7 @@ We need to assign each item object an id, and that id should increment each time
   // {id: 2, name: 'tshirt', price: 8}
 ```
 
-We set the `itemId` outside of the `Item` class so we can initialize the `itemId` to zero only one time, and then increment every time an item is initialized.  Notice that we use `++itemId` to increment the `itemId` and then assign it to the new item's id.  
+We set the `itemId` outside of the `Item` class so we can initialize the `itemId` to zero only one time, and then increment every time an item is initialized.  Notice that we use `++itemId` to increment the `itemId` and then assign it to the new item's id.`++itemId` is used instead of `itemId++` because if you put the `++` before the variable name this will return the value _after_ incrementing.
 
 2. Our second task is to insert these new objects to the `store`
 
