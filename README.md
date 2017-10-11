@@ -38,7 +38,7 @@ If we have a user, with multiple items we would want a way to associate items wi
 
 Because a item can only be associated with one user (we are assuming that each item can only be owned by one user), we say that a item belongsTo a user and a user has many items.  This is very similar to our concept of associating data with sql.  If you are unfamiliar with how to associate data in sql, you can check it out [here](https://github.com/learn-co-curriculum/sql-table-relations-readme).
 
-So could imagine representing the information in the following way:
+So you could imagine representing the information in the following way:
 
 ```js
   [{itemName: 'red socks', userName: 'Cindy'},
