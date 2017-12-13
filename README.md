@@ -88,9 +88,9 @@ We need to assign each item object an id, and that id should increment each time
     }
   }
 
-  let item = new Item('trousers', 24)
+  let item = new Item(24, 'trousers')
   // {id: 1, name: 'trousers', price: 24}
-  let secondItem = new Item('tshirt', 8)
+  let secondItem = new Item(8, 't-shirt')
   // {id: 2, name: 'tshirt', price: 8}
 ```
 
@@ -115,8 +115,8 @@ class Item {
   }
 }
 
-let item = new Item('trousers', 24)
-let secondItem = new Item('tshirt', 8)
+let item = new Item(24, 'trousers')
+let secondItem = new Item(8, 't-shirt')
 
 store.items[0]
 // {id: 1, name: 'trousers', price: 24}
@@ -163,7 +163,7 @@ class Item {
 }
 
 let bobby = new User("bobby")
-let trousers = new Item('trousers', 24, bobby)
+let trousers = new Item(24, 'trousers', bobby)
 
 store
 // {users: [{id: 1, name: 'Bobby'}], items: [{id: 1, name: 'trousers', price: 24, userId: 1}]}
