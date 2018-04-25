@@ -179,4 +179,4 @@ In this lesson, we saw how we can use a plain javascript object to store and ass
 
 + [Sql Relations](https://github.com/learn-co-curriculum/sql-table-relations-readme)
 
-<p data-visibility='hidden'>View <a href='https://learn.co/lessons/js-object-oriented-object-relations-readme'>Object Relations JS</a> on Learn.co and start learning to code for free.</p>
+<p data-visibility='hidden'>PHRG Association Methods in Javascript</p>
