@@ -175,6 +175,9 @@ So from the code above, you can see that we can associate a item with a user eit
 
 In this lesson, we saw how we can use a plain javascript object to store and associate our data.  We showed how we can assign each new instance an id by modifying our `constructor` method.  We also saw that we can write setters or modify our constructor methods to provide an interface to associate a two objects.     
 
+## Does this need an update?
+ Please open a [GitHub issue](https://github.com/learn-co-curriculum/phrg-js-object-oriented-object-relations-readme/issues) or [pull-request](https://github.com/learn-co-curriculum/phrg-js-object-oriented-object-relations-readme/pulls). Provide a detailed description that explains the issue you have found or the change you are proposing. Then "@" mention your instructor on the issue or pull-request, and send them a link via Connect.
+
 ## Resources
 
 + [Sql Relations](https://github.com/learn-co-curriculum/sql-table-relations-readme)
